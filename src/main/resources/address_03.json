@@ -1,0 +1,24 @@
+{
+  "city": "Leuven",
+  "coordinates": {
+    "latitude": 51.845539,
+    "longitude": 6.399900
+  },
+  "country": "Belgium",
+  "countryCode": "BE",
+  "door": "40",
+  "house": "202",
+  "isActive": true,
+  "isCurrent": true,
+  "municipality": "kasselo",
+  "postcode": "1170",
+  "region": "leauven",
+  "registryTime": "2021-01-20T14:52:20.654Z",
+  "street": "white street",
+  "title": "Vacation",
+  "updateTime": "2021-01-20T14:52:20.654Z",
+  "user": {
+    "externalUserId": 9,
+    "username": "32465145464"
+  }
+}

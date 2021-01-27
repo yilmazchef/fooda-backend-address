@@ -1,0 +1,27 @@
+{
+  "city": "Brussels",
+  "coordinates": {
+    "latitude": 50.845539,
+    "longitude": 4.399900
+  },
+  "country": "Belgium",
+  "countryCode": "BE",
+  "door": "33",
+  "house": "4",
+  "isActive": true,
+  "isCurrent": true,
+  "municipality": "Evere",
+  "postcode": "1140",
+  "region": "Brussels",
+  "street": "HenryDunant",
+  "title": "Home",
+  "user": {
+    "externalUserId": 1,
+    "username": "32465145464"
+  }
+}
+
+
+
+
+

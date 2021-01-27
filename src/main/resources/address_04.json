@@ -1,0 +1,24 @@
+{
+  "city": "Brussels",
+  "coordinates": {
+    "latitude": 50.9001245,
+    "longitude": 4.399900
+  },
+  "country": "Belgium",
+  "countryCode": "BE",
+  "door": "10",
+  "house": "22",
+  "isActive": true,
+  "isCurrent": true,
+  "municipality": "Anderlecht",
+  "postcode": "1170",
+  "region": "Brussels",
+  "registryTime": "2021-01-20T14:52:20.654Z",
+  "street": "Henry",
+  "title": "Home",
+  "updateTime": "2021-01-20T14:52:20.654Z",
+  "user": {
+    "externalUserId": 10,
+    "username": "32465145464"
+  }
+}
