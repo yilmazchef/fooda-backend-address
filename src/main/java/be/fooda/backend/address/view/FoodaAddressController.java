@@ -1,13 +1,13 @@
 package be.fooda.backend.address.view;
 
 import be.fooda.backend.address.client.FoodaUserClient;
-import be.fooda.backend.address.dao.FoodaAddressRepository;
 import be.fooda.backend.address.dao.FoodaAddressIndexRepository;
+import be.fooda.backend.address.dao.FoodaAddressRepository;
+import be.fooda.backend.address.model.create.FoodaAddressCreate;
 import be.fooda.backend.address.model.entity.FoodaAddress;
 import be.fooda.backend.address.model.http.FoodaAddressHttpFailureMessages;
 import be.fooda.backend.address.model.http.FoodaAddressHttpSuccessMessages;
 import be.fooda.backend.address.service.FoodaAddressMapper;
-import be.fooda.backend.address.model.create.FoodaAddressCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/address")
@@ -28,7 +27,7 @@ public class FoodaAddressController {
     private final FoodaAddressRepository addressRepository;
     private final FoodaAddressIndexRepository indexRepository;
 
-    @PostMapping("add_address")
+    @RequestMapping(value = "add_address", method = RequestMethod.POST)
     public ResponseEntity addAddress(@RequestBody @Valid FoodaAddressCreate addressCreate) {
 
         if (addressRepository.existByUniqueFields(addressCreate.getCoordinates().getLatitude(), addressCreate.getCoordinates().getLongitude())) {
@@ -47,7 +46,7 @@ public class FoodaAddressController {
 
     }
 
-    @GetMapping("get_All_Addresses")
+    @RequestMapping(value = "get_All_Addresses", method = RequestMethod.GET)
     public ResponseEntity getAll() {
         final List<FoodaAddress> addresses = addressRepository.findAll();
         return !addresses.isEmpty()
@@ -55,15 +54,15 @@ public class FoodaAddressController {
                 : ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
     }
 
-    @GetMapping("get_Address_by_id")
+    @RequestMapping(value = "get_Address_by_id", method = RequestMethod.GET)
     public ResponseEntity getAddressById(@RequestParam Long id) {
-        Optional<FoodaAddress> foundAddress = addressRepository.findById(id);
-        return foundAddress.isPresent()
-                ? ResponseEntity.status(HttpStatus.FOUND).body(foundAddress.get())
+        FoodaAddress foundAddress = addressRepository.findOne(id);
+        return foundAddress != null
+                ? ResponseEntity.status(HttpStatus.FOUND).body(foundAddress)
                 : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @GetMapping("get_by_external_user_id")
+    @RequestMapping(value = "get_by_external_user_id", method = RequestMethod.GET)
     public ResponseEntity getAddressByUserId(@RequestParam Long externalUserId) {
         List<FoodaAddress> foundContact = addressRepository.findByExternalUserId(externalUserId);
         return foundContact.isEmpty()
@@ -71,22 +70,14 @@ public class FoodaAddressController {
                 : ResponseEntity.status(HttpStatus.FOUND).body(foundContact);
     }
 
-//    @GetMapping("filter_By_Geolocation")
-//    public ResponseEntity filterByGeolocation(@RequestParam String latitude, @RequestParam String longitude) {
-//        return ResponseEntity.status(HttpStatus.FOUND).body(indexRepository.filterByGeolocation(latitude, longitude));
-//    }
-
-    @DeleteMapping("delete_address")
+    @RequestMapping(value = "delete_address", method = RequestMethod.DELETE)
     public ResponseEntity deleteAddressById(@RequestParam Long id) {
-        Optional<FoodaAddress> foundAddress = addressRepository.findById(id);
-        if (!foundAddress.isPresent())
+        FoodaAddress foundAddress = addressRepository.findOne(id);
+        if (foundAddress == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(FoodaAddressHttpFailureMessages.ADDRESS_DOES_NOT_EXIST);
 
-        FoodaAddress addressBeingDeleted = foundAddress.get();
-
-        addressBeingDeleted.setIsActive(Boolean.FALSE);
-        addressRepository.save(addressBeingDeleted);
-
+        foundAddress.setIsActive(Boolean.FALSE);
+        addressRepository.save(foundAddress);
 
         return addressRepository.existByIsActive(id, false)
                 ? ResponseEntity.status(HttpStatus.FOUND).body(FoodaAddressHttpSuccessMessages.ADDRESS_DELETED)

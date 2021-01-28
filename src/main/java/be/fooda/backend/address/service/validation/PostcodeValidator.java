@@ -5,6 +5,11 @@ import javax.validation.ConstraintValidatorContext;
 
 public class PostcodeValidator implements ConstraintValidator<Postcode,String> {
     @Override
+    public void initialize(Postcode postcode) {
+
+    }
+
+    @Override
     public boolean isValid(String postcode, ConstraintValidatorContext constraintValidatorContext) {
 
         String regex="^[1-9][0-9]{3}$" ;
