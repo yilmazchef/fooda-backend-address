@@ -28,8 +28,8 @@ public class FoodaAddressController {
     private final FoodaAddressRepository addressRepository;
     private final FoodaAddressIndexRepository indexRepository;
 
-    @RequestMapping(value = "add_address", method = RequestMethod.POST)
-    public ResponseEntity addAddress(@RequestBody @Valid FoodaAddressCreate addressCreate) {
+    @PostMapping("add")
+    public ResponseEntity add(@RequestBody @Valid FoodaAddressCreate addressCreate) {
 
         if (addressRepository.existByUniqueFields(addressCreate.getCoordinates().getLatitude(), addressCreate.getCoordinates().getLongitude())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FoodaAddressHttpFailureMessages.ADDRESS_ALREADY_EXISTS);
@@ -47,7 +47,7 @@ public class FoodaAddressController {
 
     }
 
-    @RequestMapping(value = "get_All_Addresses", method = RequestMethod.GET)
+    @GetMapping("all")
     public ResponseEntity getAll() {
         final List<FoodaAddress> addresses = addressRepository.findAll();
         return !addresses.isEmpty()
@@ -55,24 +55,24 @@ public class FoodaAddressController {
                 : ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
     }
 
-    @RequestMapping(value = "get_Address_by_id", method = RequestMethod.GET)
-    public ResponseEntity getAddressById(@RequestParam Long id) {
+    @GetMapping("{id}")
+    public ResponseEntity getById(@PathVariable Long id) {
         Optional<FoodaAddress> foundAddress = addressRepository.findById(id);
         return foundAddress.isPresent()
                 ? ResponseEntity.status(HttpStatus.FOUND).body(foundAddress)
                 : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @RequestMapping(value = "get_by_external_user_id", method = RequestMethod.GET)
-    public ResponseEntity getAddressByUserId(@RequestParam Long externalUserId) {
+    @GetMapping("ext/user/{id}")
+    public ResponseEntity getByExtUserId(@PathVariable Long externalUserId) {
         List<FoodaAddress> foundContact = addressRepository.findByExternalUserId(externalUserId);
         return foundContact.isEmpty()
                 ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(FoodaAddressHttpFailureMessages.ADDRESS_DOES_NOT_EXIST)
                 : ResponseEntity.status(HttpStatus.FOUND).body(foundContact);
     }
 
-    @RequestMapping(value = "delete_address", method = RequestMethod.DELETE)
-    public ResponseEntity deleteAddressById(@RequestParam Long id) {
+    @DeleteMapping("{id}")
+    public ResponseEntity delById(@PathVariable Long id) {
         Optional<FoodaAddress> foundAddress = addressRepository.findById(id);
         if (!foundAddress.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(FoodaAddressHttpFailureMessages.ADDRESS_DOES_NOT_EXIST);
