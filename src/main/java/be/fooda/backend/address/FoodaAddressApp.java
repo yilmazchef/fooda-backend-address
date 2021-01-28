@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableEurekaClient
 @EnableSwagger2
 @Import({
-        LuceneIndexConfig.class, RestClientConfig.class, SwaggerConfig.class,
+        LuceneIndexConfig.class, RestClientConfig.class, SwaggerConfig.class
 })
 public class FoodaAddressApp {
 
