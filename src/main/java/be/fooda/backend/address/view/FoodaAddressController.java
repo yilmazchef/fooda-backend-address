@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/address")
@@ -56,8 +57,8 @@ public class FoodaAddressController {
 
     @RequestMapping(value = "get_Address_by_id", method = RequestMethod.GET)
     public ResponseEntity getAddressById(@RequestParam Long id) {
-        FoodaAddress foundAddress = addressRepository.findOne(id);
-        return foundAddress != null
+        Optional<FoodaAddress> foundAddress = addressRepository.findById(id);
+        return foundAddress.isPresent()
                 ? ResponseEntity.status(HttpStatus.FOUND).body(foundAddress)
                 : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
@@ -72,12 +73,13 @@ public class FoodaAddressController {
 
     @RequestMapping(value = "delete_address", method = RequestMethod.DELETE)
     public ResponseEntity deleteAddressById(@RequestParam Long id) {
-        FoodaAddress foundAddress = addressRepository.findOne(id);
-        if (foundAddress == null)
+        Optional<FoodaAddress> foundAddress = addressRepository.findById(id);
+        if (!foundAddress.isPresent())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(FoodaAddressHttpFailureMessages.ADDRESS_DOES_NOT_EXIST);
 
-        foundAddress.setIsActive(Boolean.FALSE);
-        addressRepository.save(foundAddress);
+        FoodaAddress addressBeingDeleted = foundAddress.get();
+        addressBeingDeleted.setIsActive(Boolean.FALSE);
+        addressRepository.save(addressBeingDeleted);
 
         return addressRepository.existByIsActive(id, false)
                 ? ResponseEntity.status(HttpStatus.FOUND).body(FoodaAddressHttpSuccessMessages.ADDRESS_DELETED)
