@@ -162,7 +162,7 @@
                 <artifactId>heroku-maven-plugin</artifactId>
                 <version>1.0.0</version>
                 <configuration>
-                    <appName>fooda-gateway-service</appName>
+                    <appName>fooda-backend-address</appName>
                     <includeTarget>false</includeTarget>
                     <includes>
                         <include>target/${project.build.finalName}.jar</include>
