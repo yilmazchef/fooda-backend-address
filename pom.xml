@@ -35,6 +35,19 @@
 
     <dependencies>
 
+        <!-- ADDED DUE APPLICATION CRASH .. -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-xstream</artifactId>
+            <version>2.21.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.10</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
