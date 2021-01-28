@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManagerFactory;
 
-@Configuration
 public class LuceneIndexConfig {
 
     @Bean
