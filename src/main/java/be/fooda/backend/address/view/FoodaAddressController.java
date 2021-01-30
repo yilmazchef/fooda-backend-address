@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/address")
+@RequestMapping("/")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class FoodaAddressController {
 
